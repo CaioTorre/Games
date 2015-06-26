@@ -218,23 +218,17 @@ while true
 		else	
 			if (inp.length != 2)
 				puts "Wrong number of elements"
-			elsif (enabled.include?(inp[0]))
-				puts "Unknown element 2"
 			else
-				puts "Unknown element 1"
+				puts "Unknown element " + (enabled.include?(inp[0]) ? "2" : "1")
 			end
 		end
 	else
 		case inp
 		when "list"
 			puts "Enabled elements: " + enabled.join(", ") + " (" + enabled.length.to_s + "/" + allElements.length.to_s + ")"
-			#break
 		else
 			puts "Unknown command"
-			#break
 		end
-	#elsif (inp == "list")
-		#puts "Enabled elements: " + enabled.join(", ")
 	end
 	puts "--//--"
 	puts
