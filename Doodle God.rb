@@ -203,9 +203,18 @@ enabled = ["water", "air", "fire", "earth"]
 # = Element.new("", {"" => ""})
 #, "" => 
 
+Dir.chdir("C:/Users/Owner/Documents/GitHub/Games")
+#puts Dir.getwd
+file = File.open("saves/saved.txt", "a+")
 puts "Doodle God"
 puts
 while true
+	#enabled = []
+	#IO.foreach("saves/saved.txt") {|x| enabled.push(x)}
+	enabled = []
+	read = IO.readlines("saves/saved.txt")
+	read.each {|x| enabled.push(x.chomp)}
+	#puts "Read " + enabled.join(", ")
 	print "Reacting "
 	inp = gets.chomp.downcase
 	if inp.include?("+")
@@ -214,6 +223,7 @@ while true
 			out = allElements[inp[0]].reactWith(inp[1])
 			print "Output: " + out
 			puts (!enabled.include?(out) && out != "No reaction") ? " --- NEW REACTION! ---" : ""
+			file.syswrite((out + "\n")) unless (out == "No reaction" || enabled.include?(out))
 			enabled << out unless (out == "No reaction" || enabled.include?(out))
 		else	
 			if (inp.length != 2)
