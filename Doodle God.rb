@@ -153,6 +153,7 @@ enabled = ["water", "air", "fire", "earth"]
 Dir.chdir("C:/Users/Owner/Documents/GitHub/Games")
 file = File.open("saves/saved.txt", "a+")
 
+didCongratulate = false
 puts "Doodle God"
 puts
 while true
