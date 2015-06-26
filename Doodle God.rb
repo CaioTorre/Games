@@ -170,12 +170,8 @@ while true
 			puts (!enabled.include?(out) && out != "No reaction") ? " --- NEW REACTION! ---" : ""
 			file.syswrite((out + "\n")) unless (out == "No reaction" || enabled.include?(out))
 			enabled << out unless (out == "No reaction" || enabled.include?(out))
-		else	
-			if (inp.length != 2)
-				puts "Wrong number of elements"
-			else
-				puts "Unknown element " + (enabled.include?(inp[0]) ? "2" : "1")
-			end
+		else
+			puts inp.length != 2 ? "Wrong number of elements" : ("Unknown element " + (enabled.include?(inp[0]) ? "2" : "1"))
 		end
 	else
 		case inp
