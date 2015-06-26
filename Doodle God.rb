@@ -141,61 +141,8 @@ wool = Element.new("wool", {"tools" => "fabric"}, false)
 worm = Element.new("worm", {"air" => "butterfly", "sand" => "snake", "earth" => "beetle"}, false)
 
 
-=begin
-stone = Element.new("", {"" => ""})
-sand = Element.new("", {"" => ""})
-steam = Element.new("", {"" => ""})
-swamp = Element.new("", {"" => ""})
-alcohol = Element.new("", {"" => ""})
-vodka = Element.new("", {"" => ""})
-life = Element.new("", {"" => ""})
-weeds = Element.new("", {"" => ""})
-bacteria = Element.new("", {"" => ""})
-plankton = Element.new("", {"" => ""})
-snake = Element.new("", {"" => ""})
-fish = Element.new("", {"" => ""})
-coal = Element.new("", {"" => ""})
-oil = Element.new("", {"" => ""})
-flour = Element.new("", {"" => ""})
-dough = Element.new("", {"" => ""})
-wood = Element.new("", {"" => ""})
-boat = Element.new("", {"" => ""})
-cement = Element.new("", {"" => ""})
-concrete = Element.new("", {"" => ""})
-energy = Element.new("", {"" => ""})
-dust = Element.new("", {"" => ""})
-ash = Element.new("", {"" => ""})
-glass = Element.new("", {"" => ""})
-dinosaur = Element.new("", {"" => ""})
-dragon = Element.new("", {"" => ""})
-human = Element.new("", {"" => ""})
-corpse = Element.new("", {"" => ""})
-clay = Element.new("", {"" => ""})
-bricks = Element.new("", {"" => ""})
-tree = Element.new("", {"" => ""})
-bread = Element.new("", {"" => ""})
-bird = Element.new("", {"" => ""})
-phoenix = Element.new("", {"" => ""})
-grass = Element.new("", {"" => ""})
-tobacco = Element.new("", {"" => ""})
-lava = Element.new("", {"" => ""})
-storm = Element.new("", {"" => ""})
-egg = Element.new("", {"" => ""})
-car = Element.new("", {"" => ""})
-airplane = Element.new("", {"" => ""})
-worm = Element.new("", {"" => ""})
-butterfly = Element.new("", {"" => ""})
-moss = Element.new("", {"" => ""})
-tools = Element.new("", {"" => ""})
-field = Element.new("", {"" => ""})
-lizard = Element.new("", {"" => ""})
-beast = Element.new("", {"" => ""})
-seed = Element.new("", {"" => ""})
-mushroom = Element.new("", {"" => ""})
-beetle = Element.new("", {"" => ""})
-=end
 
-#allElements = {"water" => water, "air" => air, "fire" => fire, "earth" => earth, "lava" => lava, "dust" => dust, "energy" => energy, "alcohol" => alcohol}
+
 allElements = {"water" => water, "air" => air, "fire" => fire, "earth" => earth, "airplane" => airplane, "alcohol" => alcohol, "alcoholic" => alcoholic, "ash" => ash, "assassin" => assassin, "bacteria" => bacteria, "beast" => beast, "beer" => beer, "beetle" => beetle, "bird" => bird, "blood" => blood, "book" => book, "boat" => boat, "bread" => bread, "bricks" => bricks, "butterfly" => butterfly, "car" => car, "cart" => cart, "cement" => cement, "ceramics" => ceramics, "chariot" => chariot, "cigarette" => cigarette, "clay" => clay, "coal" => coal, "concrete" => concrete, "corpse" => corpse, "dinosaur" => dinosaur, "dolphin" => dolphin, "domesticated animal" => domesticated_animal, "dough" => dough, "dragon" => dragon, "dust" => dust, "egg" => egg, "electricity" => electricity, "energy" => energy, "fabric" => fabric, "fern" => fern, "fertilizer" => fertilizer, "field" => field, "firearm" => firearm, "fish" => fish, "flour" => flour, "ghost" => ghost, "ghoul" => ghoul, "glass" => glass, "golem" => golem, "grass" => grass, "gunpowder" => gunpowder, "hero" => hero, "house" => house, "human" => human, "hunter" => hunter, "hut" => hut, "lava" => lava, "life" => life, "limestone" => limestone, "lizard" => lizard, "locomotive" => locomotive, "meat" => meat, "metal" => metal, "moss" => moss, "mushroom" => mushroom, "oil" => oil, "palmtree" => palmtree, "paper" => paper, "phoenix" => phoenix, "plankton" => plankton, "poison" => poison, "poisoned weapon" => poisoned_weapon, "reed" => reed, "saltpeter" => saltpeter, "sand" => sand, "scorpion" => scorpion, "seeds" => seeds, "sex" => sex, "shell" => shell, "ship" => ship, "skyscraper" => skyscraper, "snake" => snake, "steak" => steak, "steam" => steam, "steamship" => steamship, "steam engine" => steam_engine, "stone" => stone, "storm" => storm, "sulfur" => sulfur, "swamp" => swamp, "thunderbird" => thunderbird, "tobacoo" => tobacco, "tools" => tools, "treant" => treant, "tree" => tree, "turtle" => turtle, "vampire" => vampire, "vodka" => vodka, "warrior" => warrior, "weeds" => weeds, "werewolf" => werewolf, "whale" => whale, "wheat" => wheat, "wheel" => wheel, "wizard" => wizard, "wood" => wood, "wool" => wool, "worm" => worm}
 enabled = ["water", "air", "fire", "earth"]
 
@@ -204,17 +151,15 @@ enabled = ["water", "air", "fire", "earth"]
 #, "" => 
 
 Dir.chdir("C:/Users/Owner/Documents/GitHub/Games")
-#puts Dir.getwd
 file = File.open("saves/saved.txt", "a+")
+
 puts "Doodle God"
 puts
 while true
-	#enabled = []
-	#IO.foreach("saves/saved.txt") {|x| enabled.push(x)}
+	enabled.each {|x| file.syswrite((x + "\n"))} if File.zero?(file)
 	enabled = []
 	read = IO.readlines("saves/saved.txt")
 	read.each {|x| enabled.push(x.chomp)}
-	#puts "Read " + enabled.join(", ")
 	print "Reacting "
 	inp = gets.chomp.downcase
 	if inp.include?("+")
@@ -236,6 +181,10 @@ while true
 		case inp
 		when "list"
 			puts "Enabled elements: " + enabled.join(", ") + " (" + enabled.length.to_s + "/" + allElements.length.to_s + ")"
+		#when "reset"
+			#File.delete(file)
+		when "quit"
+			break
 		else
 			puts "Unknown command"
 		end

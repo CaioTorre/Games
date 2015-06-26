@@ -1,6 +1,4 @@
 water
 air
-earth
 fire
-steam
-alcohol
+earth
