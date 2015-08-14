@@ -1,33 +1,35 @@
 class Element
-	@name = ""
-	@reactsWith = {}
-	@final = false
-	def initialize(na, rw, fn)
-		@name = na
-		@reactsWith = rw
-		@final = fn
-	end
-	def reactWith(element)
-		return !@final && @reactsWith.has_key?(element) ? @reactsWith[element] : "No reaction"
-	end
+    @name = ""
+    @reactsWith = {}
+    @final = false
+    def initialize(na, rw, fn)
+        @name = na
+        @reactsWith = rw
+        @final = fn
+    end
+    def reactWith(element)
+        return !@final && @reactsWith.has_key?(element) ? @reactsWith[element] : "No reaction"
+    end
 end
 
 def split(rcv, char)
-	splitted = Array.new((rcv.count(char)), "")
-	curr = ""
-	i = 0
-	rcv.each_byte { |x|
-		ana = x.chr
-		if ana == char
-			splitted[i] = curr
-			i += 1
-			curr = ""
-		else
-			curr << ana
-		end
-	}
-	return splitted << curr
+    splitted = Array.new((rcv.count(char)), "")
+    curr = ""
+    i = 0
+    rcv.each_byte { |x|
+        ana = x.chr
+        if ana == char
+            splitted[i] = curr
+            i += 1
+            curr = ""
+        else
+            curr << ana
+        end
+    }
+    return splitted << curr
 end
+
+puts "Starting setup..."
 
 water = Element.new("water", {"fire" => "alcohol", "air" => "steam", "stone" => "sand", "earth" => "swamp", "alcohol" => "vodka", "life" => "weeds", "bacteria" => "plankton", "snake" => "fish", "coal" => "oil", "flour" => "dough", "wood" => "boat", "cement" => "concrete"}, false)
 fire = Element.new("fire", {"water" => "alcohol", "earth" => "lava", "air" => "energy", "dust" => "ash", "stone" => "metal", "sand" => "glass", "dinosaur" => "dragon", "human" => "corpse", "clay" => "bricks", "tree" => "coal", "dough" => "bread", "bird" => "phoenix", "grass" => "tobacco"}, false)
@@ -152,42 +154,60 @@ enabled = ["water", "air", "fire", "earth"]
 
 #Dir.chdir("C:/Users/Owner/Documents/GitHub/Games") # PC VERSION
 #file = File.open("saves/saved.txt", "a+") # PC VERSION
-
+vNum = 1.1
+puts "Finished setup!"
 didCongratulate = false
-puts "Doodle God"
+puts "Welcome to Text Alchemy! If you're new to this type of game, type \"help\" or \"h\" (without the \"s) to receive a brief lesson on how to play"
+puts "As of version " + vNum.to_s + ", there are " + allElements.length.to_s + " elements to discover"
+puts "Made by CaioTorre"
 puts
 while true
-	#enabled.each {|x| file.syswrite((x + "\n"))} if File.zero?(file) # PC VERSION
-	#enabled = [] # PC VERSION
-	#read = IO.readlines("saves/saved.txt") # PC VERSION
-	#read.each {|x| enabled.push(x.chomp)} # PC VERSION
-	print "Reacting "
-	inp = gets.chomp.downcase
-	if inp.include?("+")
-		inp = split(inp, "+")
-		if (enabled.include?(inp[0]) && enabled.include?(inp[1]) && inp.length == 2)
-			out = allElements[inp[0]].reactWith(inp[1])
-			print "Output: " + out
-			puts (!enabled.include?(out) && out != "No reaction") ? " --- NEW REACTION! ---" : ""
-			#file.syswrite((out + "\n")) unless (out == "No reaction" || enabled.include?(out)) # PC VERSION
-			enabled << out unless (out == "No reaction" || enabled.include?(out))
-		else
-			puts inp.length != 2 ? "Wrong number of elements" : ("Unknown element " + (enabled.include?(inp[0]) ? "2" : "1"))
-		end
-		puts "You found all the elements! For now, you can reset the game by editing saves/saved.txt to only display the four starters, or wait for the next update, with even more elements" if (enabled.length == allElements.length && !didCongratulate)
-		didCongratulate = true if (enabled.length == allElements.length && !didCongratulate)
-	else
-		case inp
-		when "list"
-			puts "Enabled elements: " + enabled.join(", ") + " (" + enabled.length.to_s + "/" + allElements.length.to_s + ")"
-		#when "reset"
-			#File.delete(file)
-		when "quit"
-			break
-		else
-			puts "Unknown command"
-		end
-	end
-	puts "--//--"
-	puts
+    #enabled.each {|x| file.syswrite((x + "\n"))} if File.zero?(file) # PC VERSION
+    #enabled = [] # PC VERSION
+    #read = IO.readlines("saves/saved.txt") # PC VERSION
+    #read.each {|x| enabled.push(x.chomp)} # PC VERSION
+    print "Reacting "
+    rec = gets.chomp.downcase
+    inp = ""
+    unknown = [" ", ",", "\""]
+      rec.each_char { |x|
+            inp << x unless unknown.include?(x)
+      }
+    if inp.include?("+") or inp.include?(".")
+        inp = inp.include?("+") ? split(inp, "+") : split(inp, ".")
+        if (enabled.include?(inp[0]) && enabled.include?(inp[1]) && inp.length == 2)
+            out = allElements[inp[0]].reactWith(inp[1])
+            print "Output: " + out
+            puts (!enabled.include?(out) && out != "No reaction") ? " --- NEW REACTION! ---" : ""
+            #file.syswrite((out + "\n")) unless (out == "No reaction" || enabled.include?(out)) # PC VERSION
+            enabled << out unless (out == "No reaction" || enabled.include?(out))
+        else
+            puts inp.length != 2 ? "Wrong number of elements" : ("Unknown element " + (enabled.include?(inp[0]) ? "2" : "1"))
+                  puts "Look out for spaces in your expression!" if inp.include?(" ")
+        end
+        puts "You found all the elements! For now, you can reset the game by editing saves/saved.txt to only display the four starters, or wait for the next update, with even more elements" if (enabled.length == allElements.length && !didCongratulate)
+        didCongratulate = true if (enabled.length == allElements.length && !didCongratulate)
+    #elsif (inp.include?("load=")) #PC VERSION
+        #loadNum = split(inp, "=")[1] #PC VERSION
+    else
+        case inp
+        when "list", "l"
+            puts "Enabled elements: " + enabled.join(", ") + " (" + enabled.length.to_s + "/" + allElements.length.to_s + ")"
+        #when "reset"
+            #File.delete(file)
+        when "quit", "q"
+            break
+        when "help", "h"
+            puts "\n --//-- \n To see a list of your available elements, type \"list\" or \"l\" (without the \"s)"
+            puts "Choose two elements from the list to combine, and then type them as \"element1+element2\" or \"element1.element2\" (without the \"s). Note the plus sign (+) and the dot (.)!"
+            puts "If your combination successfully creates an element, you'll receive a notice, along with a \"--- NEW REACTION ---\" message if you've never made the resulting element (meaning it's a brand new element for you to use"
+            puts "Your new element will be added to the element list, and it's now available to use in new combinations"
+            puts "Use \"quit\" or \"q\" to quit the game"
+            puts "Be creative, and good luck finding all " + allElements.length.to_s + " elements!"
+        else
+            puts "Unknown command"
+        end
+    end
+    puts "--//--"
+    puts
 end
