@@ -79,6 +79,7 @@ function draw()
             sun.type = STATIC
             sunExists = true
             table.insert(planets, sun)
+            sunindex = #planets
             physics.resume()
         end
         fill(238, 88, 5, 255)
@@ -86,7 +87,13 @@ function draw()
         ellipse(sun.x, sun.y, 200)
     else
         if sunExists == true then
-            sun:destroy()
+            oldplans = planets
+            -- sun:destroy()
+            planets = {}
+            for i, v in ipairs(oldplans) do
+                if i ~= sunindex then table.insert(planets, v) end
+            end
+            sunExists = false
         end
     end
     
@@ -149,7 +156,7 @@ function draw()
             stroke(21, 179, 29, 255)
         end
         
-                    math.randomseed(v.radius^colorPal)
+        math.randomseed(v.radius^colorPal)
         
         if v.radius == 100 then
             fill(math.random(255), math.random(255), math.random(255), 255)
@@ -158,48 +165,49 @@ function draw()
         end
         
         ellipse(v.x, v.y, v.radius*2)
-        
-        if simulateGravity then
-            for ni, nv in ipairs(planets) do
-                if i ~= ni then
-                    
-                    dX = nv.x - v.x
-                    dY = nv.y - v.y
-                    
-                    d = math.sqrt(dX^2 + dY^2)
-                    
-                    callib = 0.000001
-                    
-                    fX = dX * v.radius^3 * nv.radius^3 * callib/d^2
-                    fY = dY * v.radius^3 * nv.radius^3 * callib/d^2
-                    
-                    
-                    --[[
-                    d = vec2(v.x, v.y):dist(vec2(nv.x, nv.y))
-                    
-                    w = (v.y - nv.y)/(v.x - nv.x)
-                    fX = v.x - v.radius * nv.radius/(math.sqrt(1+w)*d^2)
-                    -- fX = (v.x*d^4*w^2 + v.x*d^4 + math.sqrt(d^4*v.radius^2*nv.radius^2*w^2 +d^4*v.radius^2*nv.radius^2))/(d^4*w^2 + d^4)
-                    fY = fX * w + math.sqrt((nv.y - v.y)^2)
-                    
-                    if nv.x > v.x then
+        if pauseSim == false then
+            if simulateGravity then
+                for ni, nv in ipairs(planets) do
+                    if i ~= ni then
+                        
+                        dX = nv.x - v.x
+                        dY = nv.y - v.y
+                        
+                        d = math.sqrt(dX^2 + dY^2)
+                        
+                        callib = 0.000001
+                        
+                        fX = dX * v.radius^3 * nv.radius^3 * callib/d^2
+                        fY = dY * v.radius^3 * nv.radius^3 * callib/d^2
+                        
+                        
+                        --[[
+                        d = vec2(v.x, v.y):dist(vec2(nv.x, nv.y))
+                        
+                        w = (v.y - nv.y)/(v.x - nv.x)
+                        fX = v.x - v.radius * nv.radius/(math.sqrt(1+w)*d^2)
+                        -- fX = (v.x*d^4*w^2 + v.x*d^4 + math.sqrt(d^4*v.radius^2*nv.radius^2*w^2 +d^4*v.radius^2*nv.radius^2))/(d^4*w^2 + d^4)
+                        fY = fX * w + math.sqrt((nv.y - v.y)^2)
+                        
+                        if nv.x > v.x then
                         fX = -fX
                     end
-                    
-                    if nv.y > v.y then
+                        
+                        if nv.y > v.y then
                         fY = -fY
                     end
-                    ]]
-                    thisFX = thisFX + fX
-                    thisFY = thisFY + fY
+                        ]]
+                        thisFX = thisFX + fX
+                        thisFY = thisFY + fY
+                    end
                 end
+                v:applyForce(vec2(thisFX, thisFY))
+                -- stroke(255, 0, 253, 255)
+                -- line(v.x, v.y, v.x+thisFX, v.y+thisFY)
+                -- fill(153, 0, 255, 255)
+                -- ellipse(thisFX, thisFY, 10)
+                -- print(v.x)
             end
-            v:applyForce(vec2(thisFX, thisFY))
-            -- stroke(255, 0, 253, 255)
-            -- line(v.x, v.y, v.x+thisFX, v.y+thisFY)
-            -- fill(153, 0, 255, 255)
-            -- ellipse(thisFX, thisFY, 10)
-            -- print(v.x)
         end
     end
 end
